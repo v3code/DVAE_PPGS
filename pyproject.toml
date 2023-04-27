@@ -35,6 +35,7 @@ imageio-ffmpeg = "^0.4.8"
 tensorboard = "^2.12.2"
 cmake = "^3.26.3"
 networkx = "^3.1"
+puzzlegen = {git = "https://github.com/martius-lab/puzzlegen"}
 
 
 [build-system]

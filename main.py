@@ -71,6 +71,6 @@ def main(train_params, eval_params, model_params, optimizer_params, data_params,
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    with open(args.config) as f:
+    with open(args.config, 'r') as f:
         config = recursive_objectify(json.load(f))
     main(**config)

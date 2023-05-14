@@ -44,7 +44,8 @@ class WorldModel:
     def load(self, checkpoint_path, skip_optimizer=False):
         input_shape = get_input_shape(**self.data_params)
         action_space_size = get_action_space_size(self.data_params.env_name)
-        checkpoint = torch.load(open(checkpoint_path, 'rb'), map_location=self.device)
+        with open(checkpoint_path, 'rb') as f:
+            checkpoint = torch.load(f, map_location=self.device)
         self.model_dict = {}
         for k in self.component_list:
             self.model_dict[k] = create_component(name=k, args={'input_shape': input_shape, 'device': self.device,
@@ -164,7 +165,8 @@ class WorldModel:
             'optimizer_params': recursive_dictify(self.optimizer_params),
             'start_idx': ep_idx
         }
-        torch.save(save_dict, open(checkpoint_path, 'wb'))
+        with open(checkpoint_path, 'wb') as f:
+            torch.save(save_dict, f)
         print('DONE')
 
 
@@ -249,7 +251,8 @@ class LatentModel(PPGS):
     def load(self, checkpoint_path, skip_optimizer=False):
         input_shape = get_input_shape(**self.data_params)
         action_space_size = get_action_space_size(self.data_params.env_name)
-        checkpoint = torch.load(open(checkpoint_path, 'rb'), map_location=self.device)
+        with open(checkpoint_path, 'rb') as f:
+            checkpoint = torch.load(f, map_location=self.device)
         self.model_dict = {}
         for k in self.component_list:
             self.model_dict[k] = create_component(name=k, args={'input_shape': input_shape, 'device': self.device,
@@ -279,7 +282,8 @@ class LatentModel(PPGS):
             'optimizer_params': recursive_dictify(self.optimizer_params),
             'start_idx': ep_idx
         }
-        torch.save(save_dict, open(checkpoint_path, 'wb'))
+        with open(checkpoint_path, 'wb') as f:
+            torch.save(save_dict, f)
         self.model_dict['forward'] = self.model_dict['latent_forward']
         self.model_dict.pop('latent_forward')
         print('DONE')

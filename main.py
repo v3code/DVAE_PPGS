@@ -1,3 +1,4 @@
+import argparse
 import os
 import time
 import torch
@@ -7,7 +8,9 @@ from src.data import EnvDataset
 from src.model import get_model
 from src.utils import set_seed, recursive_objectify, recursive_dictify
 
+parser = argparse.ArgumentParser('PPGS Train')
 
+parser.add_argument('--config', default='default_params.json')
 def main(train_params, eval_params, model_params, optimizer_params, data_params, working_dir, **kwargs):
 
     if train_params.seed is not None:
@@ -67,4 +70,7 @@ def main(train_params, eval_params, model_params, optimizer_params, data_params,
 
 
 if __name__ == '__main__':
-    main(**recursive_objectify(json.load(open('default_params.json'))))
+    args = parser.parse_args()
+    with open(args.config) as f:
+        config = recursive_objectify(json.load(f))
+    main(**config)

@@ -4,6 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["v3code <vitalik.w555@gmail.com>"]
 readme = "README.md"
+packages = [
+    { include='puzzlegen' },
+    { include='src' }
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"

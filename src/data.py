@@ -52,7 +52,7 @@ class EnvDataset(torch.utils.data.Dataset):
         trajectories = os.listdir(trajectories_path)
         for trajectory in trajectories:
             full_dataset[os.path.splitext(trajectory)[0]] = np.load(os.path.join(trajectories_path, trajectory),
-                                                                    allow_pickle=True)
+                                                                    allow_pickle=True).tolist()
         return full_dataset
 
 

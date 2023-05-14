@@ -47,14 +47,15 @@
         "inverse_ln": true
     },
     "data_params": {
-        "train_path": "/path/to/train_dataset.npy",
-        "test_path": "/path/to/test_dataset.npy",
+        "train_path": "./data/digit_jump/train",
+        "test_path": "./data/digit_jump/val",
         "env_name": "digit_jump",
         "seq_len": 2,
         "shuffle": true,
         "normalize": true,
         "encode_position": false,
-        "env_params": {}
+        "env_params": {},
+        "per_file": true,
     },
     "eval_params": {
         "evaluate_losses": true,

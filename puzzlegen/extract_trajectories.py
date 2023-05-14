@@ -1,3 +1,5 @@
+
+
 import numpy as np
 import argparse
 import os
@@ -18,12 +20,13 @@ def make_env(env_name, seed):
 
 
 def extract(record_dir, number_levels, start_level, max_steps, verbose, env_name, n_repeat, random, **kwargs):
-    episodes_data = {}
-    os.makedirs(record_dir, exist_ok=True)
+    os.makedirs(os.path.join(record_dir, 'trajectories'), exist_ok=True)
 
     for n in range(n_repeat):
+        if verbose > 0:
+            print(f'Running repeat {n}.')
         for i in range(number_levels):
-            if verbose:
+            if verbose > 1:
                 print(f'Running episode {i}.')
             observations, acts, rewards, dones, infos = [], [], [], [], []
             env = make_env(env_name=env_name, seed=start_level + i)
@@ -44,13 +47,15 @@ def extract(record_dir, number_levels, start_level, max_steps, verbose, env_name
                 if i < N_RECORDS:
                     movie_writer.append_data(obs)
 
-            episodes_data[str(start_level+i) + (f'-{n}' if random else '')] = {'obs': np.asarray(observations),
-                                                              'actions': np.asarray(acts),
-                                                              'rewards': np.asarray(rewards),
-                                                              'dones': np.asarray(dones),
-                                                              'seed': start_level + i}
-    filename = os.path.join(record_dir, f"{env_name}-{'random' if random else 'expert'}-max{max_steps}-{start_level}+{number_levels}x{n_repeat}.npy")
-    np.save(filename, episodes_data, allow_pickle=True)
+            key = str(start_level+i) + (f'-{n}' if random else '')
+            filename = os.path.join(record_dir, 'trajectories', f"{key}.npy")
+            data = {'obs': np.asarray(observations),
+                    'actions': np.asarray(acts),
+                    'rewards': np.asarray(rewards),
+                    'dones': np.asarray(dones),
+                    'seed': start_level + i}
+
+            np.save(filename, data, allow_pickle=True)
     env.close()
 
 
@@ -63,12 +68,13 @@ def main():
     parser.add_argument("--max-steps", default=100, type=int, help="maximum steps per episode")
     parser.add_argument("--n-repeat", default=1, type=int, help="repeats the procedure n times")
     parser.add_argument("--random", default=1, type=int, help="uses random vs expert agent")
-    parser.add_argument("--verbose", default=True, help="increase output verbosity")
+    parser.add_argument("--verbose", default=1, type=int, help="increase output verbosity")
 
     args = parser.parse_args()
 
     kwargs = dict(num_envs=1, **vars(args))
     extract(**kwargs)
+    print('READY!')
 
 
 if __name__ == "__main__":

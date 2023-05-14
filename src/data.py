@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import torch
 from src.utils import efficient_from_numpy
@@ -31,6 +33,7 @@ class EnvDataset(torch.utils.data.Dataset):
         self.normalize = data_params.normalize
         self.encode_position = data_params.encode_position
         self.env_name = data_params.env_name
+        self.per_file = data_params.per_file
         self.device = device
         self.data = None
         self.n_episodes = None
@@ -40,6 +43,19 @@ class EnvDataset(torch.utils.data.Dataset):
         self.sample_count = None
         self.load_data()
 
+    def load_dataset(self):
+        if not self.per_file:
+            return np.load(self.path, allow_pickle=True).tolist()
+
+        full_dataset = {}
+        trajectories_path = os.path.join(self.path, 'trajectories')
+        trajectories = os.listdir(trajectories_path)
+        for trajectory in trajectories:
+            full_dataset[os.path.splitext(trajectory)[0]] = np.load(os.path.join(trajectories_path, trajectory),
+                                                                    allow_pickle=True)
+        return full_dataset
+
+
     def load_data(self):
         """
         Loads data from .npy file, organizes it into rollouts of varying length.
@@ -47,7 +63,7 @@ class EnvDataset(torch.utils.data.Dataset):
         if self.data is None:
             self.total_length = 0
             self.episode_lengths = {}
-            full_dataset = np.load(self.path, allow_pickle=True).tolist()
+            full_dataset = self.load_dataset()
             print(f'Loaded data from {self.path}')
 
             # throw out all unnecessary information and save observations and actions in state

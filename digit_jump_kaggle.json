@@ -47,14 +47,15 @@
         "inverse_ln": true
     },
     "data_params": {
-        "train_path": "/kaggle/input/digit-jump/digit_jump/train/digit_jump-random-max20-0+1000x20.npy",
-        "test_path": "/kaggle/input/digit-jump/digit_jump/val/digit_jump-random-max20-1000+1000x5.npy",
+        "train_path": "/kaggle/input/digit-jump/digit_jump/train",
+        "test_path": "/kaggle/input/digit-jump/digit_jump/val",
         "env_name": "digit_jump",
         "seq_len": 2,
         "shuffle": true,
         "normalize": true,
         "encode_position": false,
-        "env_params": {}
+        "env_params": {},
+        "per_file": true
     },
     "eval_params": {
         "evaluate_losses": true,

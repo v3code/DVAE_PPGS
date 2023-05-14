@@ -54,7 +54,8 @@
         "shuffle": true,
         "normalize": true,
         "encode_position": false,
-        "env_params": {}
+        "env_params": {},
+        "per_file": false
     },
     "eval_params": {
         "evaluate_losses": true,

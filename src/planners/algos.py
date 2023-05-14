@@ -53,7 +53,7 @@ def mc_bfs(start, goal, anchor, forward_model, action_set, max_depth, margin, ea
         all_nodes = np.concatenate((visited, children))
         similarities = (all_nodes @ all_nodes.T) > min_similarity
         np.fill_diagonal(similarities, False)
-        G = networkx.convert_matrix.from_numpy_matrix(similarities)
+        G = networkx.convert_matrix.from_numpy_array(similarities)
         networkx.set_node_attributes(G, {i: 1e6 if i < visited.shape[0] else 1e-6 for i in range(all_nodes.shape[0])}, 'weight')
         res = vertex_cover.min_weighted_vertex_cover(G, 'weight')
         to_keep = [i for i in range(len(children)) if i+len(visited) not in res]
@@ -119,7 +119,7 @@ def flat_mc_bfs(start, goal, anchor, forward_model, action_set, max_depth, margi
         all_nodes = np.concatenate((visited, children))
         similarities = dist(all_nodes, all_nodes) < max_dist
         np.fill_diagonal(similarities, False)
-        G = networkx.convert_matrix.from_numpy_matrix(similarities)
+        G = networkx.convert_matrix.from_numpy_array(similarities)
         networkx.set_node_attributes(G, {i: 1e6 if i < visited.shape[0] else 1e-6 for i in range(all_nodes.shape[0])}, 'weight')
         res = vertex_cover.min_weighted_vertex_cover(G, 'weight')
         to_keep = [i for i in range(len(children)) if i+len(visited) not in res]
@@ -188,7 +188,7 @@ def selective_mc_bfs(start, goal, forbidden, anchor, forward_model, action_set, 
         all_nodes = np.concatenate((visited, children))
         similarities = (all_nodes @ all_nodes.T) > min_similarity
         np.fill_diagonal(similarities, False)
-        G = networkx.convert_matrix.from_numpy_matrix(similarities)
+        G = networkx.convert_matrix.from_numpy_array(similarities)
         networkx.set_node_attributes(G, {i: 1e6 if i < visited.shape[0] else 1e-6 for i in range(all_nodes.shape[0])}, 'weight')
         res = vertex_cover.min_weighted_vertex_cover(G, 'weight')
         to_keep = [i for i in range(len(children)) if i+len(visited) not in res]

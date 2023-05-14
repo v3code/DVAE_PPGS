@@ -55,7 +55,7 @@
         "normalize": true,
         "encode_position": false,
         "env_params": {},
-        "per_file": true,
+        "per_file": true
     },
     "eval_params": {
         "evaluate_losses": true,
